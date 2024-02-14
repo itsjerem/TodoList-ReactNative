@@ -22,6 +22,12 @@ export default function App() {
     setEnteredGoal("");
   };
 
+  const removeGoalHandler = (goalIndex) => {
+    setGoals((currentGoals) => {
+      return currentGoals.filter((goal, index) => index !== goalIndex);
+    });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
@@ -37,6 +43,12 @@ export default function App() {
         {goals.map((goal, index) => (
           <View key={index} style={styles.listItem}>
             <Text>{goal}</Text>
+            <Button
+              title="X"
+              color="red"
+              fontWeight="bold"
+              onPress={() => removeGoalHandler(index)}
+            />
           </View>
         ))}
       </ScrollView>
