@@ -16,6 +16,14 @@ export default function App() {
     });
   };
 
+  const editGoalHandler = (goalIndex, newTitle) => {
+    setGoals((currentGoals) => {
+      return currentGoals.map((goal, index) =>
+        index === goalIndex ? newTitle : goal
+      );
+    });
+  };
+
   return (
     <View style={styles.container}>
       <GoalInput onAddGoal={addGoalHandler} />
@@ -25,6 +33,7 @@ export default function App() {
             key={index}
             title={goal}
             onDelete={() => removeGoalHandler(index)}
+            onEdit={(newTitle) => editGoalHandler(index, newTitle)}
           />
         ))}
       </ScrollView>

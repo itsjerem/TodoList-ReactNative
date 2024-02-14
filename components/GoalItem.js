@@ -6,30 +6,56 @@ import {
   TouchableOpacity,
   Modal,
   Button,
+  TextInput,
 } from "react-native";
 
-const GoalItem = ({ title, onDelete }) => {
-  const [modalVisible, setModalVisible] = useState(false);
+const GoalItem = ({ title, onDelete, onEdit }) => {
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editedGoal, setEditedGoal] = useState(title);
 
   const handleDelete = () => {
-    setModalVisible(false);
+    setDeleteModalVisible(false);
     onDelete();
+  };
+
+  const handleEdit = () => {
+    setEditModalVisible(false);
+    onEdit(editedGoal);
   };
 
   return (
     <View style={styles.listItem}>
       <Text>{title}</Text>
-      <TouchableOpacity onPress={() => setModalVisible(true)}>
-        <Text style={styles.deleteButtonText}>X</Text>
-      </TouchableOpacity>
-      <Modal visible={modalVisible} animationType="slide">
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity onPress={() => setEditModalVisible(true)}>
+          <Text style={styles.editButtonText}>Edit</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setDeleteModalVisible(true)}>
+          <Text style={styles.deleteButtonText}>X</Text>
+        </TouchableOpacity>
+      </View>
+      <Modal visible={deleteModalVisible} animationType="slide">
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>
               Are you sure you want to delete this goal?
             </Text>
             <Button title="Yes" onPress={handleDelete} />
-            <Button title="No" onPress={() => setModalVisible(false)} />
+            <Button title="No" onPress={() => setDeleteModalVisible(false)} />
+          </View>
+        </View>
+      </Modal>
+      <Modal visible={editModalVisible} animationType="slide">
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <TextInput
+              style={styles.input}
+              onChangeText={setEditedGoal}
+              value={editedGoal}
+            />
+            <Button title="Confirm" onPress={handleEdit} />
+            <Button title="Cancel" onPress={() => setEditModalVisible(false)} />
           </View>
         </View>
       </Modal>
@@ -46,9 +72,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
   },
+  buttonsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "50%",
+  },
   deleteButtonText: {
     color: "red",
     fontWeight: "bold",
+  },
+  editButtonText: {
+    color: "red",
   },
   centeredView: {
     flex: 1,
@@ -57,10 +91,12 @@ const styles = StyleSheet.create({
     marginTop: 22,
   },
   modalView: {
-    margin: 20,
+    width: "80%",
+    height: "50%",
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
+    paddingTop: 75,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -70,10 +106,20 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+    justifyContent: "center",
   },
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+  },
+  input: {
+    width: "100%",
+    borderColor: "#gray",
+    borderWidth: 1,
+    padding: 10,
+    marginBottom: 100,
+    borderRadius: 5,
+    backgroundColor: "#white",
   },
 });
 

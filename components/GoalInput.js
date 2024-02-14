@@ -22,7 +22,7 @@ const GoalInput = ({ onAddGoal }) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <TextInput
-              placeholder="Add a new Target/Goal/Objective/Task/ntm"
+              placeholder="Add a new Target/Goal/Objective/task/ntm"
               style={styles.input}
               onChangeText={goalInputHandler}
               value={enteredGoal}
